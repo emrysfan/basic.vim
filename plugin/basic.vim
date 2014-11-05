@@ -306,3 +306,15 @@ function! HasPaste()
     en
     return ''
 endfunction
+
+" Preview window on the bottom
+function! PreviewDown()
+    if !&previewwindow
+        silent! wincmd P
+    endif
+    if &previewwindow
+        silent! wincmd J
+        silent! wincmd p
+    endif
+endfunction
+au BufWinEnter * call PreviewDown()

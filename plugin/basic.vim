@@ -19,7 +19,7 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
-set history=700 
+set history=700
 
 " Show line number
 set number
@@ -39,7 +39,7 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" Emacs-style command line editing 
+" Emacs-style command line editing
 cnoremap <C-A> <Home>
 cnoremap <C-B> <Left>
 cnoremap <C-F> <Right>
@@ -77,7 +77,7 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
@@ -180,7 +180,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -316,5 +316,14 @@ function! PreviewDown()
         silent! wincmd J
         silent! wincmd p
     endif
-endfunction
+endf
 au BufWinEnter * call PreviewDown()
+
+autocmd FileType * set sw=2 tw=100
+autocmd FileType ruby set sw=2
+autocmd FileType python set sw=4
+
+nmap <C-n> :NERDTreeToggle<CR>
+colorscheme solarized
+set background=dark
+set cursorline

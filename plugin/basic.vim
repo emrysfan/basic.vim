@@ -19,10 +19,25 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
-set history=700
+set history=700 
+
+" Mac OS X clipboard sharing
+set clipboard=unnamed
 
 " Show line number
 set number
+
+" Diff vertically
+set diffopt=vertical
+
+" highlight current line
+" set cursorline
+
+" change default vsplit separator
+set fillchars+=vert:\ 
+
+
+set hidden
 
 " Enable filetype plugins
 filetype plugin on
@@ -37,9 +52,9 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving
-nmap <leader>w :w!<cr>
+" noremap <leader>s :w!<CR>
 
-" Emacs-style command line editing
+" Emacs-style command line editing 
 cnoremap <C-A> <Home>
 cnoremap <C-B> <Left>
 cnoremap <C-F> <Right>
@@ -77,7 +92,7 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases
+" When searching try to be smart about cases 
 set smartcase
 
 " Highlight search results
@@ -109,9 +124,6 @@ set tm=500
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
-
-colorscheme desert
-set background=dark
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -171,18 +183,19 @@ map k gk
 map <space> :
 
 " Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
+map <silent> <leader><CR> :noh<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+map <leader>te :tabedit <c-r>=expand("%:p:h")<CR>/
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
-" Specify the behavior when switching between buffers
+" Specify the behavior when switching between buffers 
 try
-  set switchbuf=useopen,usetab,newtab
+  set switchbuf=useopen
+  " set switchbuf=useopen,usetab,newtab
   set stal=2
 catch
 endtry
@@ -227,7 +240,8 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
 
 " Vimgreps in the current file
-map <leader>g :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+" map <leader>g :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+noremap <leader>g :Ack
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -236,14 +250,16 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remove the Windows ^M - when the encoding gets messed up
+" noremap <Leader>m mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
 " Quickly open a buffer for scripbble
-map <leader>b :tabnew ~/.buffer<cr>
+noremap <leader>b :tabnew ~/.buffer<CR>
 
 " Toggle paste mode on and off
-map <leader>p :setlocal paste!<cr>
+noremap <leader>p :setlocal paste!<CR>
 
 " Read Ex commands from ~/.vimrc
-map <leader>s :source ~/.vimrc<cr>
+" noremap <leader>s :source ~/.vimrc<CR>
 
 " Open a window to show current result when excute a quickfix command
 autocmd QuickFixCmdPost * :copen
@@ -309,21 +325,55 @@ endfunction
 
 " Preview window on the bottom
 function! PreviewDown()
-    if !&previewwindow
-        silent! wincmd P
-    endif
-    if &previewwindow
-        silent! wincmd J
-        silent! wincmd p
-    endif
+    if !&previewwindow 
+        silent! wincmd P 
+    endif 
+    if &previewwindow 
+        silent! wincmd J 
+        silent! wincmd p 
+    endif 
 endf
 au BufWinEnter * call PreviewDown()
 
-autocmd FileType * set sw=2 tw=100
+autocmd FileType * set sw=2
 autocmd FileType ruby set sw=2
 autocmd FileType python set sw=4
+autocmd FileType objc set sw=4
+autocmd FileType go set sw=4
 
-nmap <C-n> :NERDTreeToggle<CR>
-colorscheme solarized
+noremap <Leader>N :NERDTreeToggle<CR>
+noremap <Leader>T :TagbarToggle<CR>
+noremap <Leader>M :CtrlPMRUFiles<CR>
+
+let g:molokai_original = 1
+let g:rehash256 = 1
+let g:airline_exclude_preview = 1
 set background=dark
-set cursorline
+colorscheme molokai
+
+let g:go_fmt_command = 'goimports'
+let g:neocomplete#enable_at_startup = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_no_default_key_mappings=1
+
+" Vim-go Mappings
+au FileType go nnoremap <leader>gr :GoRun<CR>
+au FileType go nnoremap <leader>ge :GoRename<CR>
+au FileType go nnoremap <leader>gb :GoBuild<CR>
+au FileType go nnoremap <leader>gt :GoTest<CR>
+au FileType go nnoremap <leader>gi :GoInfo<CR>
+au FileType go nnoremap <leader>gs :GoImplements<CR>
+
+noremap <Leader> <Plug>(easymotion-prefix)
+nmap <Leader>w <Plug>(easymotion-bd-w)
+
+let g:syntastic_javascript_checker = "jshint"
+
+let g:ctrlp_open_new_file = 't'
+nmap s <Plug>(easymotion-s2)
+map / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-sn)

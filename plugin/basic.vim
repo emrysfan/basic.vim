@@ -52,16 +52,7 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving
-" noremap <leader>s :w!<CR>
-
-" Emacs-style command line editing 
-cnoremap <C-A> <Home>
-cnoremap <C-B> <Left>
-cnoremap <C-F> <Right>
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-cnoremap <Esc>r <C-F>?
-cmap <M-R> <Esc>r
+noremap <leader>s :w!<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -230,6 +221,10 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.rb :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.go :call DeleteTrailingWS()
+autocmd BufWrite *.html :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 
@@ -240,8 +235,8 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
 
 " Vimgreps in the current file
-" map <leader>g :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
-noremap <leader>g :Ack
+noremap <leader>g :vimgrep /<C-R><C-W>/ <C-R>%<CR>
+noremap <leader>f :Ack <C-R><C-W><CR>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -341,9 +336,9 @@ autocmd FileType python set sw=4
 autocmd FileType objc set sw=4
 autocmd FileType go set sw=4
 
-noremap <Leader>N :NERDTreeToggle<CR>
-noremap <Leader>T :TagbarToggle<CR>
-noremap <Leader>M :CtrlPMRUFiles<CR>
+noremap <Leader>n :NERDTreeToggle<CR>
+noremap <Leader>t :TagbarToggle<CR>
+noremap <Leader>m :CtrlPMRUFiles<CR>
 
 let g:molokai_original = 1
 let g:rehash256 = 1
@@ -370,10 +365,43 @@ au FileType go nnoremap <leader>gs :GoImplements<CR>
 
 noremap <Leader> <Plug>(easymotion-prefix)
 nmap <Leader>w <Plug>(easymotion-bd-w)
+map / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-sn)
 
 let g:syntastic_javascript_checker = "jshint"
 
 let g:ctrlp_open_new_file = 't'
-nmap s <Plug>(easymotion-s2)
-map / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-sn)
+
+let g:ctrlp_custom_ignore = {
+      \ 'dir': 'node_modules',
+      \ }
+
+autocmd FileType ruby nmap <leader>r :'<,'>w !ruby<cr>
+autocmd FileType ruby nmap <leader>r :'<,'>w !python<cr>
+
+hi StatusLineNC term=bold,reverse cterm=bold,reverse ctermfg=232 ctermbg=239 gui=bold,reverse guifg=#455354 guibg=fg
+hi StatusLine term=bold,reverse cterm=bold,reverse ctermfg=28 ctermbg=15 gui=bold,reverse guifg=#455354 guibg=fg
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        exec t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <leader>z :ZoomToggle<CR>
+
+nnoremap <leader>q :qa<CR>
+
+autocmd FileType ruby nmap <leader>r :w !ruby<CR>
+autocmd FileType ruby vmap <leader>r :'<,'>:w !ruby<CR>
+autocmd FileType javascript nmap <leader>r :w !babel \|node<CR>
+autocmd FileType javascript vmap <leader>r :'<,'>:w !babel \|node<CR>
+autocmd FileType python nmap <leader>r :w !python<CR>
+autocmd FileType python vmap <leader>r :'<,'>:w !python<CR>
